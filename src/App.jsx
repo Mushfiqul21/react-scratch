@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import './App.css'
+import SignUpForm from './SignUpForm';
+
 
 function Greetings({name, age, prof})
 {
@@ -33,6 +35,8 @@ function App() {
       <Greetings name={name} age={age} prof={prof} />
       
       <Tasks />
+
+      <SignUpForm />
     </div>
   )
 }
