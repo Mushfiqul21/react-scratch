@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import SignUpForm from './SignUpForm';
+import { Link, Routes, Route } from 'react-router-dom';
 
 
 function Greetings({name, age, prof})
@@ -25,18 +26,32 @@ function Tasks()
   </div>)
   
 }
+function HomePage() {
+  return (
+    <h1>Homepage</h1>
+  );
+}
+function AboutPage() {
+  return (
+    <h1>About page</h1>
+  );
+}
 function App() {
 
   const name = "Mushfiqul Islam";
   const age = 25;
   const prof = "Full Stack Developer";
   return (
-    <div>
-      <Greetings name={name} age={age} prof={prof} />
-      
-      <Tasks />
-
-      <SignUpForm />
+    <div className='min-h-screen flex flex-col items-center justify-center'>
+      <nav className='flex gap-3 mb-2 text-blue-950'>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="*" element={<h1>Not Found</h1>} />
+      </Routes>
     </div>
   )
 }
