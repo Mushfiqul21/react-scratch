@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import './App.css'
 import SignUpForm from './SignUpForm';
 import { Link, Routes, Route } from 'react-router-dom';
@@ -31,16 +31,23 @@ function HomePage() {
   );
 }
 function AboutPage() {
+    const {user} = useContext(AuthContext);
+
   return (
-    <h1>About page</h1>
+    <div>
+      <h1>About page</h1>
+      <h1>{user.name}</h1>
+    </div>
   );
 }
 function LoginPage() {
   const [name, setName] = useState("");
-  const [user, setUser] = useState({ name: "", isAuth: false });
+    const {user, login} = useContext(AuthContext);
+
   function handleSubmit(e) {
     e.preventDefault();
-    setUser({ name: name, isAuth: true });
+    login(name);
+    console.log(name);
   }
   return (
     <div>
@@ -51,6 +58,8 @@ function LoginPage() {
           type="text"
           name="name"
           placeholder="Enter your name"
+          value={name}
+          onChange={(e)=> setName(e.target.value)}
         />
 
         <button type="submit">
@@ -63,6 +72,13 @@ function LoginPage() {
 
 function App() {
 
+  const [user, setUser] = useState({ name: "", isAuth: false });
+
+  function login(name)
+  {
+    setUser({ name: name, isAuth: true });
+  }
+
   const name = "Mushfiqul Islam";
   const age = 25;
   const prof = "Full Stack Developer";
@@ -73,7 +89,7 @@ function App() {
         <Link to="/about">About</Link>
         <Link to="/login">Login</Link>
       </nav>
-      <AuthContext.Provider>
+      <AuthContext.Provider value={{ user, login }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
