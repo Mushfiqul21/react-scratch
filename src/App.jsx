@@ -2,14 +2,13 @@ import { useState } from 'react'
 import './App.css'
 import SignUpForm from './SignUpForm';
 import { Link, Routes, Route } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
 
 
-function Greetings({name, age, prof})
-{
+function Greetings({ name, age, prof }) {
   return <h1>Hello, world. I am {name}. I am {age}. I am a {prof}</h1>
 }
-function Tasks()
-{
+function Tasks() {
   const tasks = [
     { id: 1, title: "Coding" },
     { id: 2, title: "Lunch" },
@@ -17,14 +16,14 @@ function Tasks()
   ];
   return (
     <div>
- <h2 className='m-2'>My Tasks</h2>
+      <h2 className='m-2'>My Tasks</h2>
       <ul className='m-3'>
         {tasks.map((task, index) => {
           return <li key={task.id}>{task.title}</li>
         })}
       </ul>
-  </div>)
-  
+    </div>)
+
 }
 function HomePage() {
   return (
@@ -36,6 +35,32 @@ function AboutPage() {
     <h1>About page</h1>
   );
 }
+function LoginPage() {
+  const [name, setName] = useState("");
+  const [user, setUser] = useState({ name: "", isAuth: false });
+  function handleSubmit(e) {
+    e.preventDefault();
+    setUser({ name: name, isAuth: true });
+  }
+  return (
+    <div>
+      <h1 className='my-4'>Login</h1>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter your name"
+        />
+
+        <button type="submit">
+          Login
+        </button>
+      </form>
+    </div>
+  );
+}
+
 function App() {
 
   const name = "Mushfiqul Islam";
@@ -43,15 +68,19 @@ function App() {
   const prof = "Full Stack Developer";
   return (
     <div className='min-h-screen flex flex-col items-center justify-center'>
-      <nav className='flex gap-3 mb-2 text-blue-950'>
+      <nav className='flex gap-5 mb-2 text-blue-950 border-b-2'>
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
+        <Link to="/login">Login</Link>
       </nav>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="*" element={<h1>Not Found</h1>} />
-      </Routes>
+      <AuthContext.Provider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<h1>Not Found</h1>} />
+        </Routes>
+      </AuthContext.Provider>
     </div>
   )
 }
