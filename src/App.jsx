@@ -78,6 +78,10 @@ function App() {
   {
     setUser({ name: name, isAuth: true });
   }
+  function logout()
+  {
+    setUser({ name: "", isAuth: false });
+  }
 
   const name = "Mushfiqul Islam";
   const age = 25;
@@ -87,9 +91,9 @@ function App() {
       <nav className='flex gap-5 mb-2 text-blue-950 border-b-2'>
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
-        <Link to="/login">Login</Link>
+        {!user.isAuth ? (<Link to="/login">Login</Link>) : (<button onClick={logout}>Logout</button>)}
       </nav>
-      <AuthContext.Provider value={{ user, login }}>
+      <AuthContext.Provider value={{ user, login, logout }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
