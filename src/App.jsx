@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import './App.css'
 import SignUpForm from './SignUpForm';
 import { Link, Routes, Route } from 'react-router-dom';
@@ -31,7 +31,7 @@ function HomePage() {
   );
 }
 function AboutPage() {
-    const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <div>
@@ -42,7 +42,7 @@ function AboutPage() {
 }
 function LoginPage() {
   const [name, setName] = useState("");
-    const {user, login} = useContext(AuthContext);
+  const { user, login } = useContext(AuthContext);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -59,7 +59,7 @@ function LoginPage() {
           name="name"
           placeholder="Enter your name"
           value={name}
-          onChange={(e)=> setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
 
         <button type="submit">
@@ -74,14 +74,28 @@ function App() {
 
   const [user, setUser] = useState({ name: "", isAuth: false });
 
-  function login(name)
-  {
+  function login(name) {
     setUser({ name: name, isAuth: true });
   }
-  function logout()
-  {
+  function logout() {
     setUser({ name: "", isAuth: false });
   }
+
+  useEffect(() => {
+
+    async function fetchUsers() {
+      try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+        const data = await response.json();
+
+        console.log(data)
+      } catch (err) {
+
+      }
+    }
+
+    fetchUsers();
+  }, [])
 
   const name = "Mushfiqul Islam";
   const age = 25;
@@ -102,6 +116,8 @@ function App() {
         </Routes>
       </AuthContext.Provider>
     </div>
+
+
   )
 }
 
